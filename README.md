@@ -36,6 +36,11 @@ conda activate venv
 pip install -r requirements.txt
 ```
 
+To clear the terminal screen 
+```
+cls
+```
+
 To Add files to git
 ```
 git add .
