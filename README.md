@@ -20,8 +20,10 @@ Application url:
 
 Creating conda environment
 ```
-conda create -p venv python==3.7 -y
+conda create -p venv python==3.9 -y
 ```
+
+for windows use this 
 ```
 conda activate venv/
 ```
