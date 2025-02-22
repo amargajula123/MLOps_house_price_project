@@ -1,3 +1,6 @@
+numpy
 Flask
-gunicorn  #gunicorn which is used to run  flask 
-          # application its basically designed for Linex based system 
+gunicorn
+scikit-learn #sklearn
+pandas  
+-e .
