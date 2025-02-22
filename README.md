@@ -129,7 +129,7 @@ python setup.py install
 ```
 
 
-Install ipykernel
+Install ipykernel for jupyter notebook
 
 ```
 pip install ipykernel
