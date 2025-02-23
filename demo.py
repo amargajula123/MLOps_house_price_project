@@ -17,8 +17,8 @@ def main():
         # +++++++++get_data_transformation_config() Done++++++++++
 
         # +++++++++get_data_validation_config() Check++++++++++
-        #data_validation_config = Configuration().get_data_validation_config()
-        #print(data_validation_config)
+        # data_validation_config = Configuration().get_data_validation_config()
+        # print(data_validation_config)
         # +++++++++get_data_validation_config() Done++++++++++
 
         # +++++++++get_data_ingestion_config() Check++++++++++
