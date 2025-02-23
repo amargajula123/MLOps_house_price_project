@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 
-ROOT_DIR =os.getcwd() # "d:\\ML\\MLOps_house_price_project" #os.getcwd() # to get current/root working directrory
+ROOT_DIR = os.getcwd() # "d:\\ML\\MLOps_house_price_project" #os.getcwd() # to get current/root working directrory
 CONFIG_DIR = "config"
 CONFIG_FILE_NAME = "config.yaml"
 CONFIG_FILE_PATH = os.path.join(ROOT_DIR,CONFIG_DIR,CONFIG_FILE_NAME)
