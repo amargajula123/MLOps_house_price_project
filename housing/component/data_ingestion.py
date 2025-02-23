@@ -71,6 +71,7 @@ class DataIngestion:
             logging.info(f"Reading csv file: [{housing_file_path}]")
             housing_data_frame = pd.read_csv(housing_file_path)
 
+            # creating new column in daraframe ["income_cat"] of group with 5 bins  
             housing_data_frame["income_cat"] = pd.cut(
                 housing_data_frame["median_income"],
                 bins=[0.0, 1.5, 3.0, 4.5, 6.0, np.inf],
