@@ -12,8 +12,8 @@ def main():
         # +++++++++get_model_trainer_config() Done++++++++++
 
         # +++++++++get_data_transformation_config() Check++++++++++
-        #data_transformation_config = Configuration().get_data_transformation_config()
-        #print(data_transformation_config)
+        data_transformation_config = Configuration().get_data_transformation_config()
+        print(data_transformation_config)
         # +++++++++get_data_transformation_config() Done++++++++++
 
         # +++++++++get_data_validation_config() Check++++++++++
@@ -37,8 +37,8 @@ def main():
 
         # +++++++++ CHECK ANY COMPONENT ++++++++++
 
-        pipeline = Pipeline()
-        pipeline.run_pipeline()
+        # pipeline = Pipeline()
+        # pipeline.run_pipeline()
 
         # +++++++++CHECK ANY COMPONENT DONE++++++++++
 
