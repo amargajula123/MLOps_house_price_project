@@ -168,4 +168,4 @@ class DataValidation:
 
 
     def __del__(self):
-        logging.info(f"{'='*20}Data Valdaition log completed.{'='*20} \n")
+        logging.info(f"{'='*20}Data Valdaition log completed.{'='*20} \n\n")

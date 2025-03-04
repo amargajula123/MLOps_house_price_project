@@ -1,7 +1,7 @@
 from housing.pipeline.pipeline import Pipeline
 from housing.logger import logging
 from housing.config.configuration import Configuration
-#from housing.component.data_transformation import DataTransformation
+from housing.component.data_transformation import DataTransformation
 
 
 def main():
@@ -12,8 +12,8 @@ def main():
         # +++++++++get_model_trainer_config() Done++++++++++
 
         # +++++++++get_data_transformation_config() Check++++++++++
-        data_transformation_config = Configuration().get_data_transformation_config()
-        print(data_transformation_config)
+        # data_transformation_config = Configuration().get_data_transformation_config()
+        # print(data_transformation_config)
         # +++++++++get_data_transformation_config() Done++++++++++
 
         # +++++++++get_data_validation_config() Check++++++++++
@@ -28,17 +28,18 @@ def main():
 
 
 
-        
+        # file_path =r"D:\ML\MLOps_house_price_project\config\schema.yaml"
+        # schema_file_path =r"D:\ML\MLOps_house_price_project\housing\artifact\data_ingestion\2025-02-24-01-13-00\ingested_data\train\housing.csv"  
         # df = DataTransformation.load_data(file_path=file_path,schema_file_path=schema_file_path
-        #)
-        #print(df.columns)
-        #print(df.dtypes)
+        # )
+        # print(df.columns)
+        # print(df.dtypes)
         
 
         # +++++++++ CHECK ANY COMPONENT ++++++++++
 
-        # pipeline = Pipeline()
-        # pipeline.run_pipeline()
+        pipeline = Pipeline()
+        pipeline.run_pipeline()
 
         # +++++++++CHECK ANY COMPONENT DONE++++++++++
 

@@ -10,7 +10,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from housing.constant import *
-from housing.util.util import read_yaml_file,save_numpy_array_data,load_numpy_array_data,load_data,save_object
+from housing.util.util import read_yaml_file,save_numpy_array_data,load_numpy_array_data,save_object,load_object,load_data
 
 import os,sys
 
@@ -86,7 +86,7 @@ class DataTransformation:
             self.data_ingestion_artifact = data_ingestion_artifact
             self.data_validation_artifact = data_validation_artifact
         except Exception as e:
-            raise HosingException(e,sys) from e 
+            raise HousingException(e,sys) from e 
         
 
     def get_data_transformer_object(self)->ColumnTransformer:
@@ -126,7 +126,7 @@ class DataTransformation:
             return preprocessing
         
         except Exception as e:
-            raise HosingException(e,sys) from e
+            raise HousingException(e,sys) from e
         
     def initiate_data_transformation(self)->DataTransformationArtifact:
         try:
@@ -175,7 +175,7 @@ class DataTransformation:
             transformed_train_dir = self.data_transformation_config.transformed_train_dir
             transformed_test_dir = self.data_transformation_config.transformed_test_dir
 
-            train_file_name = os.path.basename(train_file_path).replace(".csv",".npz")
+            train_file_name = os.path.basename(train_file_path).replace(".csv",".npz")           
             test_file_name = os.path.basename(test_file_path).replace(".csv",".npz")
 
             transformed_train_file_path = os.path.join(transformed_train_dir,train_file_name)
@@ -202,7 +202,7 @@ class DataTransformation:
             logging.info(f"Data trannsformation artifact: {data_transformation_artifact}")
             return data_transformation_artifact
         except Exception as e:
-            raise HosingException(e,sys) from e
+            raise HousingException(e,sys) from e
         
     def __del__(self):
         logging.info(f"{'='*20}Data Transformation log completed.{'='*20} \n\n")
