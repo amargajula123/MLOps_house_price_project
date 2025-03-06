@@ -82,7 +82,13 @@ class ModelTrainer:
             
             model_list = [model.best_model for model in grid_searched_best_model_list ]
             logging.info(f"Evaluation all trained model on training and testing dataset both")
-            metric_info:MetricInfoArtifact = evaluate_regression_model(model_list=model_list,X_train=x_train,y_train=y_train,X_test=x_test,y_test=y_test,base_accuracy=base_accuracy)
+            logging.info(f"MODEL LIST => [{model_list}]")
+            metric_info:MetricInfoArtifact = evaluate_regression_model(model_list=model_list,
+                                                                       X_train=x_train,
+                                                                       y_train=y_train,
+                                                                       X_test=x_test,
+                                                                       y_test=y_test,
+                                                                       base_accuracy=base_accuracy)
 
             logging.info(f"Best found model on both training and testing dataset.")
             
@@ -112,7 +118,7 @@ class ModelTrainer:
             raise HousingException(e, sys) from e
 
     def __del__(self):
-        logging.info(f"{'=' * 20}Model trainer log completed.{'=' * 20} ")
+        logging.info(f"{'=' * 20}Model trainer log completed.{'=' * 20} \n\n")
 
 
         # loading transformed and testng dataset

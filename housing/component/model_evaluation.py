@@ -124,11 +124,11 @@ class ModelEvaluation:
             model_list = [model, trained_model_object]
 
             metric_info_artifact = evaluate_regression_model(model_list=model_list,
-                                                               X_train=train_dataframe,
-                                                               y_train=train_target_arr,
-                                                               X_test=test_dataframe,
-                                                               y_test=test_target_arr,
-                                                               base_accuracy=self.model_trainer_artifact.model_accuracy,
+                                                             X_train=train_dataframe,
+                                                             y_train=train_target_arr,
+                                                             X_test=test_dataframe,
+                                                             y_test=test_target_arr,
+                                                             base_accuracy=self.model_trainer_artifact.model_accuracy,
                                                                )
             logging.info(f"Model evaluation completed. model metric artifact: {metric_info_artifact}")
 
@@ -154,4 +154,4 @@ class ModelEvaluation:
             raise HousingException(e, sys) from e
 
     def __del__(self):
-        logging.info(f"{'=' * 20}Model Evaluation log completed.{'=' * 20} ")
+        logging.info(f"{'=' * 20}Model Evaluation log completed.{'=' * 20} \n\n")

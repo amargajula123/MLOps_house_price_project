@@ -2,7 +2,6 @@ from cmath import log
 import importlib
 from pyexpat import model
 import numpy as np
-from pydantic import HttpUrl
 import yaml
 from housing.exception import HousingException
 import os
@@ -35,14 +34,14 @@ BestModel = namedtuple("BestModel", ["model_serial_number",
                                      "best_parameters",
                                      "best_score", ])
 
-MetricInfoArtifact = namedtuple("MetricInfoArtifact",["model_name",
-                                                    "model_object", 
-                                                    "train_rmse",
-                                                    "test_rmse",
-                                                    "train_accuracy",
-                                                    "test_accuracy", 
-                                                    "model_accuracy", 
-                                                    "index_number"])
+MetricInfoArtifact = namedtuple("MetricInfoArtifact",["model_name", 
+                                                      "model_object", 
+                                                      "train_rmse", 
+                                                      "test_rmse", 
+                                                      "train_accuracy",
+                                                      "test_accuracy", 
+                                                      "model_accuracy", 
+                                                      "index_number"])
 
 
 
@@ -87,21 +86,23 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
             train_acc = r2_score(y_train, y_train_pred)
             test_acc = r2_score(y_test, y_test_pred)
             
-            #Calculating mean squared error on training and testing dataset
+            #Calculating root mean squared error on training and testing dataset
             train_rmse = np.sqrt(mean_squared_error(y_train, y_train_pred))
             test_rmse = np.sqrt(mean_squared_error(y_test, y_test_pred))
 
             # Calculating harmonic mean of train_accuracy and test_accuracy
+            # in case of harmonic mean it give higher weightage to the lower accuracy
+            # lower weightage to the higher accuracy.
             model_accuracy = (2 * (train_acc * test_acc)) / (train_acc + test_acc)
             diff_test_train_acc = abs(test_acc - train_acc)
             
             #logging all important metric
             logging.info(f"{'>>'*30} Score {'<<'*30}")
-            logging.info(f"Train Score\t\t Test Score\t\t Average Score")
+            logging.info(f"\t\tTrain Score\t\t\t\t Test Score\t\t\t\t Average Score")
             logging.info(f"{train_acc}\t\t {test_acc}\t\t{model_accuracy}")
 
             logging.info(f"{'>>'*30} Loss {'<<'*30}")
-            logging.info(f"Diff test train accuracy: [{diff_test_train_acc}].") 
+            logging.info(f"Difference b/w test & train accuracy: [{diff_test_train_acc}].") 
             logging.info(f"Train root mean squared error: [{train_rmse}].")
             logging.info(f"Test root mean squared error: [{test_rmse}].")
 
@@ -109,7 +110,9 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
             #if model accuracy is greater than base accuracy and train and test score is within certain thershold
             #we will accept that model as accepted model
             if model_accuracy >= base_accuracy and diff_test_train_acc < 0.05:
+                logging.info(f" my BASE ACCURACY = [{base_accuracy}]\n\n")
                 base_accuracy = model_accuracy
+                logging.info(f" now BASE ACCURACY is bcome = [{base_accuracy}]\n\n")
                 metric_info_artifact = MetricInfoArtifact(model_name=model_name,
                                                         model_object=model,
                                                         train_rmse=train_rmse,
@@ -119,7 +122,7 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
                                                         model_accuracy=model_accuracy,
                                                         index_number=index_number)
 
-                logging.info(f"Acceptable model found {metric_info_artifact}. ")
+                logging.info(f"Acceptable model found -> {metric_info_artifact}. ")
             index_number += 1
         if metric_info_artifact is None:
             logging.info(f"No model found with higher accuracy than base accuracy")
@@ -129,7 +132,6 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
 
 
 def get_sample_model_config_yaml_file(export_dir: str):
-    """this fuction will returns you yaml file of models(0,1,2...)"""
     try:
         model_config = {
             GRID_SEARCH_KEY: {
@@ -175,16 +177,9 @@ class ModelFactory:
             self.grid_search_property_data: dict = dict(self.config[GRID_SEARCH_KEY][PARAM_KEY])
 
             self.models_initialization_config: dict = dict(self.config[MODEL_SELECTION_KEY])
- 
-            #this (initialized_model_list) is object of models which we take 
-            # and which is not yet fit means its normal model without any fit or transform
-            # we declared object but but initialized with "None" simply before training what
-            # what models we have that we store inside this variable
-            self.initialized_model_list = None #List
 
-            # if we perform "GridsearchCv" it will give you best parameters with respect to those models.
-            # that parameters we will store in thin variable (grid_searched_best_model_list)
-            self.grid_searched_best_model_list = None #List
+            self.initialized_model_list = None
+            self.grid_searched_best_model_list = None
 
         except Exception as e:
             raise HousingException(e, sys) from e
@@ -214,6 +209,7 @@ class ModelFactory:
             return config
         except Exception as e:
             raise HousingException(e, sys) from e
+        
 
     @staticmethod
     def class_for_name(module_name:str, class_name:str):
@@ -387,4 +383,7 @@ class ModelFactory:
             return ModelFactory.get_best_model_from_grid_searched_best_model_list(grid_searched_best_model_list,
                                                                                   base_accuracy=base_accuracy)
         except Exception as e:
-            raise HousingException(e, sys)
+            raise HousingException(e, sys)  
+
+            
+   
