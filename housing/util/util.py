@@ -5,6 +5,23 @@ import numpy as np
 import pandas as pd
 import dill
 from housing.constant import * 
+
+
+
+def write_yaml_file(file_path:str,data:dict=None):
+    """
+    Create yaml file 
+    file_path: str
+    data: dict
+    """
+    try:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path,"w") as yaml_file:
+            if data is not None:
+                yaml.dump(data,yaml_file)
+    except Exception as e:
+        raise HousingException(e,sys)
+    
 # read_yaml_file,save_numpy_array_data,load_numpy_array_data,save_object,load_object,load_data
 def read_yaml_file(file_path:str)->dict:
     """
@@ -74,6 +91,9 @@ def load_object(file_path:str):
 
 # set the datatypes of every column by based on "shema.yaml" file
 def load_data(file_path: str, schema_file_path: str) -> pd.DataFrame:
+    """
+    take file_path of data file location and return dataframe
+    """
     try:
         datatset_schema = read_yaml_file(schema_file_path)
 

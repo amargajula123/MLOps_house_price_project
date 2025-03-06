@@ -6,9 +6,21 @@ from housing.component.data_transformation import DataTransformation
 
 def main():
     try:
+        # +++++++++get_model_pusher_config() Check++++++++++
+        # model_pusher_config = Configuration().get_model_pusher_config()
+        # print(model_pusher_config)
+        # +++++++++get_model_trainer_config() Done++++++++++
+
+
+        # +++++++++get_model_evaluation_config() Check++++++++++
+        #  model_evaluation_config = Configuration().get_model_evaluation_config()
+        #  print(model_evaluation_config)
+        # +++++++++get_model_trainer_config() Done++++++++++
+
+
         # +++++++++get_model_trainer_config() Check++++++++++
-        #model_traine_config = Configuration().get_model_trainer_config()
-        #print(model_traine_config)
+        # model_traine_config = Configuration().get_model_trainer_config()
+        # print(model_traine_config)
         # +++++++++get_model_trainer_config() Done++++++++++
 
         # +++++++++get_data_transformation_config() Check++++++++++

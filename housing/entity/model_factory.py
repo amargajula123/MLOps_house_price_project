@@ -35,9 +35,14 @@ BestModel = namedtuple("BestModel", ["model_serial_number",
                                      "best_parameters",
                                      "best_score", ])
 
-MetricInfoArtifact = namedtuple("MetricInfoArtifact",
-                                ["model_name", "model_object", "train_rmse", "test_rmse", "train_accuracy",
-                                 "test_accuracy", "model_accuracy", "index_number"])
+MetricInfoArtifact = namedtuple("MetricInfoArtifact",["model_name",
+                                                    "model_object", 
+                                                    "train_rmse",
+                                                    "test_rmse",
+                                                    "train_accuracy",
+                                                    "test_accuracy", 
+                                                    "model_accuracy", 
+                                                    "index_number"])
 
 
 
@@ -170,9 +175,16 @@ class ModelFactory:
             self.grid_search_property_data: dict = dict(self.config[GRID_SEARCH_KEY][PARAM_KEY])
 
             self.models_initialization_config: dict = dict(self.config[MODEL_SELECTION_KEY])
+ 
+            #this (initialized_model_list) is object of models which we take 
+            # and which is not yet fit means its normal model without any fit or transform
+            # we declared object but but initialized with "None" simply before training what
+            # what models we have that we store inside this variable
+            self.initialized_model_list = None #List
 
-            self.initialized_model_list = None
-            self.grid_searched_best_model_list = None
+            # if we perform "GridsearchCv" it will give you best parameters with respect to those models.
+            # that parameters we will store in thin variable (grid_searched_best_model_list)
+            self.grid_searched_best_model_list = None #List
 
         except Exception as e:
             raise HousingException(e, sys) from e
@@ -192,6 +204,10 @@ class ModelFactory:
 
     @staticmethod
     def read_params(config_path: str) -> dict:
+        """
+        read the yaml file and returns 
+        the yamle file as dictionary
+        """
         try:
             with open(config_path) as yaml_file:
                 config:dict = yaml.safe_load(yaml_file)
