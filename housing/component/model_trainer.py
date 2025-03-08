@@ -75,14 +75,14 @@ class ModelTrainer:
             logging.info(f"Initiating operation model selecttion")
             best_model = model_factory.get_best_model(X=x_train,y=y_train,base_accuracy=base_accuracy)
             
-            logging.info(f"Best model found on training dataset: {best_model}")
+            logging.info(f"Best model found on training dataset: [{best_model}]")
             
             logging.info(f"Extracting trained model list.")
             grid_searched_best_model_list:List[GridSearchedBestModel]=model_factory.grid_searched_best_model_list
             
             model_list = [model.best_model for model in grid_searched_best_model_list ]
-            logging.info(f"Evaluation all trained model on training and testing dataset both")
-            logging.info(f"MODEL LIST => [{model_list}]")
+            logging.info(f"Evaluation all trained model on training and testing dataset both\n")
+            logging.info(f"MODEL LIST => [{model_list}]\n")
             metric_info:MetricInfoArtifact = evaluate_regression_model(model_list=model_list,
                                                                        X_train=x_train,
                                                                        y_train=y_train,

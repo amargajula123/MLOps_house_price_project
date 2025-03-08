@@ -18,15 +18,16 @@ PARAM_KEY = 'params'
 MODEL_SELECTION_KEY = 'model_selection'
 SEARCH_PARAM_GRID_KEY = "search_param_grid"
 
-InitializedModelDetail = namedtuple("InitializedModelDetail",
-                                    ["model_serial_number", "model", "param_grid_search", "model_name"])
+InitializedModelDetail = namedtuple("InitializedModelDetail",["model_serial_number", 
+                                                              "model", 
+                                                              "param_grid_search", 
+                                                              "model_name"])
 
 GridSearchedBestModel = namedtuple("GridSearchedBestModel", ["model_serial_number",
                                                              "model",
                                                              "best_model",
                                                              "best_parameters",
-                                                             "best_score",
-                                                             ])
+                                                             "best_score",])
 
 BestModel = namedtuple("BestModel", ["model_serial_number",
                                      "model",
@@ -42,7 +43,6 @@ MetricInfoArtifact = namedtuple("MetricInfoArtifact",["model_name",
                                                       "test_accuracy", 
                                                       "model_accuracy", 
                                                       "index_number"])
-
 
 
 def evaluate_classification_model(model_list: list, X_train:np.ndarray, y_train:np.ndarray, X_test:np.ndarray, y_test:np.ndarray, base_accuracy:float=0.6)->MetricInfoArtifact:
@@ -76,7 +76,7 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
         metric_info_artifact = None
         for model in model_list:
             model_name = str(model)  #getting model name based on model object
-            logging.info(f"{'>>'*30}Started evaluating model: [{type(model).__name__}] {'<<'*30}")
+            logging.info(f"{'='*30}Started evaluating model: [{type(model).__name__}] {'='*30}")
             
             #Getting prediction for training and testing dataset
             y_train_pred = model.predict(X_train)
@@ -97,11 +97,11 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
             diff_test_train_acc = abs(test_acc - train_acc)
             
             #logging all important metric
-            logging.info(f"{'>>'*30} Score {'<<'*30}")
+            logging.info(f"{'*'*30} Score {'*'*30}")
             logging.info(f"\t\tTrain Score\t\t\t\t Test Score\t\t\t\t Average Score")
             logging.info(f"{train_acc}\t\t {test_acc}\t\t{model_accuracy}")
 
-            logging.info(f"{'>>'*30} Loss {'<<'*30}")
+            logging.info(f"{'*'*30} Loss {'*'*30}")
             logging.info(f"Difference b/w test & train accuracy: [{diff_test_train_acc}].") 
             logging.info(f"Train root mean squared error: [{train_rmse}].")
             logging.info(f"Test root mean squared error: [{test_rmse}].")
@@ -113,14 +113,14 @@ def evaluate_regression_model(model_list: list, X_train:np.ndarray, y_train:np.n
                 logging.info(f" my BASE ACCURACY = [{base_accuracy}]\n\n")
                 base_accuracy = model_accuracy
                 logging.info(f" now BASE ACCURACY is bcome = [{base_accuracy}]\n\n")
-                metric_info_artifact = MetricInfoArtifact(model_name=model_name,
-                                                        model_object=model,
-                                                        train_rmse=train_rmse,
-                                                        test_rmse=test_rmse,
-                                                        train_accuracy=train_acc,
-                                                        test_accuracy=test_acc,
-                                                        model_accuracy=model_accuracy,
-                                                        index_number=index_number)
+                metric_info_artifact = MetricInfoArtifact(  model_name=model_name,
+                                                            model_object=model,
+                                                            train_rmse=train_rmse,
+                                                            test_rmse=test_rmse,
+                                                            train_accuracy=train_acc,
+                                                            test_accuracy=test_acc,
+                                                            model_accuracy=model_accuracy,
+                                                            index_number=index_number)
 
                 logging.info(f"Acceptable model found -> {metric_info_artifact}. ")
             index_number += 1
@@ -186,13 +186,19 @@ class ModelFactory:
 
     @staticmethod
     def update_property_of_class(instance_ref:object, property_data: dict):
+        """ 
+        initialize parameters of Modules 
+        """
         try:
             if not isinstance(property_data, dict):
                 raise Exception("property_data parameter required to dictionary")
             print(property_data)
             for key, value in property_data.items():
                 logging.info(f"Executing:$ {str(instance_ref)}.{key}={value}")
-                setattr(instance_ref, key, value)
+                setattr(instance_ref, key, value) # setattr(LinearRegression, 'fit_intercept', True)
+                # setattr is responsible for if you want to set dynamically the parameters of any ML model class
+                # you can use "setattr" function {check the notebook inside importlib.ipynb there explained 
+                # "setattr" fun similar
             return instance_ref
         except Exception as e:
             raise HousingException(e, sys) from e
@@ -213,17 +219,24 @@ class ModelFactory:
 
     @staticmethod
     def class_for_name(module_name:str, class_name:str):
+        """
+        "class_for_name" is responsible for importing "modules" like ex 
+        {sklearn.linear_model import LinearRegression}
+                        or
+        {from sklearn.model_selection import GridSearchCV } ... etc ...
+        """
         try:
             # load the module, will raise ImportError if module cannot be loaded
             module = importlib.import_module(module_name)
             # get the class, will raise AttributeError if class cannot be found
             logging.info(f"Executing command: from {module} import {class_name}")
-            class_ref = getattr(module, class_name)
+            class_ref = getattr(module, class_name) # this getattr fun will give you refference to the imported class that we want
             return class_ref
         except Exception as e:
             raise HousingException(e, sys) from e
 
-    def execute_grid_search_operation(self, initialized_model: InitializedModelDetail, input_feature,
+    def execute_grid_search_operation(self, initialized_model: InitializedModelDetail, 
+                                      input_feature,
                                       output_feature) -> GridSearchedBestModel:
         """
         excute_grid_search_operation(): function will perform paramter search operation and
@@ -238,21 +251,28 @@ class ModelFactory:
         try:
             # instantiating GridSearchCV class
             
-           
+           # here "class_for_name" is responsible for importing "class: GridSearchCV & module: sklearn.model_selection"
+           #  like ex {from sklearn.model_selection import GridSearchCV }
             grid_search_cv_ref = ModelFactory.class_for_name(module_name=self.grid_search_cv_module,
                                                              class_name=self.grid_search_class_name
                                                              )
 
-            grid_search_cv = grid_search_cv_ref(estimator=initialized_model.model,
-                                                param_grid=initialized_model.param_grid_search)
+            grid_search_cv = grid_search_cv_ref(estimator=initialized_model.model, 
+                                                param_grid=initialized_model.param_grid_search) 
+            
+            #logging.info(f"grid_search_cv(estimator=,param_grid= ) = [{grid_search_cv}]")
+            
             grid_search_cv = ModelFactory.update_property_of_class(grid_search_cv,
                                                                    self.grid_search_property_data)
 
             
-            message = f'{">>"* 30} f"Training {type(initialized_model.model).__name__} Started." {"<<"*30}'
-            logging.info(message)
+            logging.info(f"All models and parameters and GridSearchCV parameters are set now FIT the DATASET\n\n")
+            message = f'{"="* 30} f"Training [ {type(initialized_model.model).__name__} ] Started." {"="*30}'
+            logging.info(f"message = {message}")
             grid_search_cv.fit(input_feature, output_feature)
-            message = f'{">>"* 30} f"Training {type(initialized_model.model).__name__}" completed {"<<"*30}'
+            message = f'{"="* 30} f"Training [ {type(initialized_model.model).__name__}" ] completed {"="*30}'
+            logging.info(message)
+
             grid_searched_best_model = GridSearchedBestModel(model_serial_number=initialized_model.model_serial_number,
                                                              model=initialized_model.model,
                                                              best_model=grid_search_cv.best_estimator_,
@@ -274,15 +294,16 @@ class ModelFactory:
             for model_serial_number in self.models_initialization_config.keys():
 
                 model_initialization_config = self.models_initialization_config[model_serial_number]
+        # "class_for_name" is responsible for importing "Models" like ex {sklearn.linear_model import LinearRegression}
                 model_obj_ref = ModelFactory.class_for_name(module_name=model_initialization_config[MODULE_KEY],
                                                             class_name=model_initialization_config[CLASS_KEY]
                                                             )
-                model = model_obj_ref()
+                model = model_obj_ref() # model is nothing but object of the model. ex like {model = LinearRegression()}
                 
                 if PARAM_KEY in model_initialization_config:
                     model_obj_property_data = dict(model_initialization_config[PARAM_KEY])
-                    model = ModelFactory.update_property_of_class(instance_ref=model,
-                                                                  property_data=model_obj_property_data)
+                    model = ModelFactory.update_property_of_class(instance_ref=model, # model  = LinearRegression()
+                                                                  property_data=model_obj_property_data) # param_grid_search {fit_intercept :True}
 
                 param_grid_search = model_initialization_config[SEARCH_PARAM_GRID_KEY]
                 model_name = f"{model_initialization_config[MODULE_KEY]}.{model_initialization_config[CLASS_KEY]}"
@@ -371,15 +392,27 @@ class ModelFactory:
             raise HousingException(e, sys) from e
 
     def get_best_model(self, X, y,base_accuracy=0.6) -> BestModel:
+        """
+        this get_best_model function will work on Training dataset 
+        inside this function we have functions like 
+        1. get_initialized_model_list()
+        2. initiate_best_parameter_search_for_initialized_models( take 3 parameters:1 initialized_model_list
+                                                                                    2 input_feature
+                                                                                    3 output_feature )
+
+        3 . get_best_model_from_grid_searched_best_model_list( take 2 parameters  : 1 grid_searched_best_model_list
+                                                                                    2 base_accuracy=base_accuracy )
+        """
         try:
-            logging.info("Started Initializing model from config file")
-            initialized_model_list = self.get_initialized_model_list()
-            logging.info(f"Initialized model: {initialized_model_list}")
+            logging.info("Started Initializing model from config file -> { model.yaml }")
+            initialized_model_list = self.get_initialized_model_list() 
+            logging.info(f"Initialized model: {initialized_model_list} lennght = {len(initialized_model_list)}")
+
             grid_searched_best_model_list = self.initiate_best_parameter_search_for_initialized_models(
-                initialized_model_list=initialized_model_list,
-                input_feature=X,
-                output_feature=y
-            )
+                                                 initialized_model_list=initialized_model_list,
+                                                 input_feature=X,
+                                                 output_feature=y
+                                                )
             return ModelFactory.get_best_model_from_grid_searched_best_model_list(grid_searched_best_model_list,
                                                                                   base_accuracy=base_accuracy)
         except Exception as e:
