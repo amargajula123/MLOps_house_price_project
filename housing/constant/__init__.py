@@ -2,12 +2,18 @@ import os
 from datetime import datetime
 
 
-ROOT_DIR = os.getcwd() # "d:\\ML\\MLOps_house_price_project" #os.getcwd() # to get current/root working directrory
+#ROOT_DIR = os.getcwd() # "d:\\ML\\MLOps_house_price_project" #os.getcwd() # to get current/root working directrory
+
+def get_current_time_stamp():
+    return f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
+
+    
+ROOT_DIR = os.getcwd()  #to get current working directory
 CONFIG_DIR = "config"
 CONFIG_FILE_NAME = "config.yaml"
 CONFIG_FILE_PATH = os.path.join(ROOT_DIR,CONFIG_DIR,CONFIG_FILE_NAME)
 
-CURRENT_TIME_STAMP = f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
+CURRENT_TIME_STAMP = get_current_time_stamp()
 
 
 # Training pipeline related variable
