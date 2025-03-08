@@ -2,7 +2,7 @@ from collections import namedtuple
 from datetime import datetime
 import uuid
 from housing.config.configuration import Configuration
-from housing.logger import logging, get_log_file_name
+from housing.logger import logging#, get_log_file_name
 from housing.exception import HousingException
 from threading import Thread
 from typing import List
@@ -63,7 +63,8 @@ class Pipeline(Thread):
         try:
             os.makedirs(config.training_pipeline_config.artifact_dir, exist_ok=True)
             Pipeline.experiment_file_path=os.path.join(config.training_pipeline_config.artifact_dir,
-                                                       EXPERIMENT_DIR_NAME, EXPERIMENT_FILE_NAME)
+                                                       EXPERIMENT_DIR_NAME, EXPERIMENT_FILE_NAME    )
+            
             super().__init__(daemon=False, name="pipeline")
             self.config = config
         except Exception as e:
@@ -230,7 +231,7 @@ class Pipeline(Thread):
             raise HousingException(e, sys) from e
 
     @classmethod
-    def get_experiments_status(cls, limit: int = 5) -> pd.DataFrame:
+    def get_experiments_status(cls, limit: int = 6) -> pd.DataFrame:
         try:
             if os.path.exists(Pipeline.experiment_file_path):
                 df = pd.read_csv(Pipeline.experiment_file_path)
