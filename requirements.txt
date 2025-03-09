@@ -8,14 +8,3 @@ dill
 evidently # pip install evidently
 matplotlib
 -e .
-
-# numpy
-# Flask
-# gunicorn
-# #sklearn
-# pandas
-# PyYAML
-# evidently
-# dill
-# matplotlib
-# -e .
