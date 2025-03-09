@@ -267,10 +267,10 @@ class ModelFactory:
 
             
             logging.info(f"All models and parameters and GridSearchCV parameters are set now FIT the DATASET\n\n")
-            message = f'{"="* 30} f"Training [ {type(initialized_model.model).__name__} ] Started." {"="*30}'
+            message = f'{"="* 30} f"Training [ {type(initialized_model.model).__name__} ] Started" {"="*30}'
             logging.info(f"message = {message}")
             grid_search_cv.fit(input_feature, output_feature)
-            message = f'{"="* 30} f"Training [ {type(initialized_model.model).__name__}" ] completed {"="*30}'
+            message = f'{"="* 30} f"Training [ {type(initialized_model.model).__name__} ] completed." {"="*30}'
             logging.info(message)
 
             grid_searched_best_model = GridSearchedBestModel(model_serial_number=initialized_model.model_serial_number,

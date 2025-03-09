@@ -25,7 +25,7 @@ PIPELINE_DIR = os.path.join(ROOT_DIR, PIPELINE_FOLDER_NAME)
 MODEL_DIR = os.path.join(ROOT_DIR, SAVED_MODELS_DIR_NAME)
 
 
-#from housing.logger import get_log_dataframe
+from housing.logger import get_log_dataframe
 
 HOUSING_DATA_KEY = "housing_data"
 MEDIAN_HOUSING_VALUE_KEY = "median_house_value"
@@ -99,7 +99,7 @@ def train():
     }
     return render_template('train.html', context=context)
 
-
+# MAIN WE ACTUALLY NEED TO FOCUS ON THIS PREDICT FUN.
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     context = {
@@ -153,6 +153,7 @@ def saved_models_dir(req_path):
 
     # Check if path is a file and serve
     if os.path.isfile(abs_path):
+        # here the send file will actually help us if you click the file it will directly download.
         return send_file(abs_path)
 
     # Show directory contents
@@ -178,6 +179,7 @@ def update_model_config():
             write_yaml_file(file_path=MODEL_CONFIG_FILE_PATH, data=model_config)
 
         model_config = read_yaml_file(file_path=MODEL_CONFIG_FILE_PATH)
+        # this model_config content we will displaying over the website
         return render_template('update_model.html', result={"model_config": model_config})
 
     except  Exception as e:

@@ -50,9 +50,9 @@ def main():
         
 
         # +++++++++ CHECK ANY COMPONENT ++++++++++
-        # config_file_path="D:\ML\MLOps_house_price_project\config\config.yaml"
-        # pipeline = Pipeline(config=Configuration(config_file_path=config_file_path))
-        # pipeline.run_pipeline()
+        config_file_path="D:\ML\MLOps_house_price_project\config\config.yaml"
+        pipeline = Pipeline(config=Configuration(config_file_path=config_file_path))
+        pipeline.run_pipeline()
 
         # +++++++++CHECK ANY COMPONENT DONE++++++++++
 
@@ -60,11 +60,11 @@ def main():
         # +++++++++RUN PIPELINE THREAD CLASS+++++++++
         # config_file_path="D:\ML\MLOps_house_price_project\config\config.yaml"
 
-        config_path =  os.path.join("config","config.yaml")
-        pipeline = Pipeline(Configuration(config_file_path=config_path))
-        # pipeline.run_pipeline()
-        pipeline.start()
-        logging.info("main function execution completed")
+        # config_path =  os.path.join("config","config.yaml")
+        # pipeline = Pipeline(Configuration(config_file_path=config_path))
+        # # pipeline.run_pipeline()
+        # pipeline.start()
+        # logging.info("main function execution completed")
 
         # +++++++++RUN PIPELINE THREAD CLASS DONE+++++++++
 
