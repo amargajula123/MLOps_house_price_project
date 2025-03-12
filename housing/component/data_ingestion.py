@@ -9,7 +9,6 @@ from six.moves import urllib
 import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit
 
- # data DataIngestion
 class DataIngestion:
 
     def __init__(self,data_ingestion_config:DataIngestionConfig ):
