@@ -15,26 +15,17 @@ jobs:
       - name: Install Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Login to Heroku Container Registry
+      - name: Login to Heroku Container Registry  
         run: |
           echo ${{ secrets.HEROKU_API_KEY }} | docker login --username=_ --password-stdin registry.heroku.com
 
       - name: Set Heroku to Use Docker
         run: heroku stack:set container --app ${{ secrets.HEROKU_APP_NAME }}
 
-      - name: Deploy to Heroku Using Docker
-        uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
-          usedocker: true
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
+          docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+
+      - name: Release the Docker Image on Heroku
+        run: heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
