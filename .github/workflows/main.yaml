@@ -39,3 +39,4 @@ jobs:
 
       - name: Check Logs  # ✅ Step 9: Get live logs (for debugging)
         run: heroku logs --tail --app ${{ secrets.HEROKU_APP_NAME }}
+        # there is no any email requre
