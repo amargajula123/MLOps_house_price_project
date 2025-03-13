@@ -153,3 +153,7 @@ bassically we  compare statistics of both datasets
 
 ## Write a function to get training file path from artifact dir
 #hi
+
+```
+heroku stack:set container --app  {here you HEROKU APP NAME}
+```
