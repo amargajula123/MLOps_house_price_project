@@ -29,7 +29,7 @@ conda activate venv/
 ```
 OR 
 ```
-conda activate venv
+conda activate venv 
 ```
 
 ```
